@@ -1,6 +1,0 @@
-print("Database")
-DB_HOST = "mysql-free-tier.cehuakoia7qd.us-east-1.rds.amezonaws.com"
-DB_PORT = 3306
-DB_NAME = "company_db"
-DB_USER = "admin"
-DB_PASSWORD = "Kaveri1212"
