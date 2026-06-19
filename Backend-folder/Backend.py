@@ -8,7 +8,7 @@ db = mysql.connector.connect(
     host="mysql-free-tier.cehuakoia7qd.us-east-1.rds.amezonaws.com",
     user="admin",
     password="Kaveri1212",
-    Database="employees",
+    database="employees",
     port=3306
 )
 
