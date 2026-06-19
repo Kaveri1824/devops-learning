@@ -5,10 +5,11 @@ app = Flask(__name__)
 
 # Database Connection
 db = mysql.connector.connect(
-    host="mysql-free-tier.cehuakoia7qd.us-east-1",
+    host="mysql-free-tier.cehuakoia7qd.us-east-1.rds.amezonaws.com",
     user="admin",
     password="Kaveri1212",
-    Database="employees"
+    Database="employees",
+    port=3306
 )
 
 # GET - Fetch all records
