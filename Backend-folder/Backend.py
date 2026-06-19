@@ -8,7 +8,7 @@ db = mysql.connector.connect(
     host="mysql-free-tier.cehuakoia7qd.us-east-1",
     user="admin",
     password="Kaveri1212",
-    
+    Database="employees"
 )
 
 # GET - Fetch all records
