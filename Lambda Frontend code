@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Management System</title>
+</head>
+<body>
+
+    <h1>Student Management System</h1>
+
+    <h2>Add Student</h2>
+
+    <input type="number" id="rollnumber" placeholder="Roll Number"><br><br>
+
+    <input type="text" id="name" placeholder="Name"><br><br>
+
+    <input type="email" id="email" placeholder="Email"><br><br>
+
+    <button onclick="addStudent()">Add Student</button>
+
+    <hr>
+
+    <h2>Student List</h2>
+
+    <button onclick="getStudents()">Load Students</button>
+
+    <div id="students"></div>
+
+<script>
+
+const API_URL = "YOUR_LAMBDA_FUNCTION_URL";
+
+async function addStudent() {
+
+    const rollnumber = document.getElementById("rollnumber").value;
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+
+    const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            rollnumber: Number(rollnumber),
+            name: name,
+            email: email
+        })
+    });
+
+    const data = await response.json();
+
+    alert(data.message);
+
+    getStudents();
+}
+
+async function getStudents() {
+
+    const response = await fetch(API_URL);
+
+    const students = await response.json();
+
+    let html = `
+        <table border="1" cellpadding="10">
+            <tr>
+                <th>Roll Number</th>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+    `;
+
+    students.forEach(student => {
+
+        html += `
+            <tr>
+                <td>${student.rollnumber}</td>
+                <td>${student.name}</td>
+                <td>${student.email}</td>
+            </tr>
+        `;
+    });
+
+    html += "</table>";
+
+    document.getElementById("students").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>
