@@ -1,0 +1,83 @@
+import json
+import boto3
+from decimal import Decimal
+
+dynamodb = boto3.resource(
+    'dynamodb',
+    region_name='us-east-1'
+)
+
+table = dynamodb.Table('Student')
+
+def decimal_default(obj):
+    if isinstance(obj, Decimal):
+        return float(obj)
+    raise TypeError
+
+def lambda_handler(event, context):
+
+    try:
+        method = event['requestContext']['http']['method']
+
+        if method == 'GET':
+
+            response = table.scan()
+
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': json.dumps(
+                    response['Items'],
+                    default=decimal_default
+                )
+            }
+
+        elif method == 'POST':
+
+            body = json.loads(event['body'])
+
+            rollnumber = int(body['rollnumber'])
+            name = body['name']
+            email = body['email']
+
+            table.put_item(
+                Item={
+                    'rollnumber': rollnumber,
+                    'name': name,
+                    'email': email
+                }
+            )
+
+            return {
+                'statusCode': 201,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': json.dumps({
+                    'message': 'Student added successfully'
+                })
+            }
+
+        else:
+
+            return {
+                'statusCode': 405,
+                'body': json.dumps({
+                    'message': 'Method Not Allowed'
+                })
+            }
+
+    except Exception as e:
+
+        print("ERROR:", str(e))
+
+        return {
+            'statusCode': 500,
+            'body': json.dumps({
+                'error': str(e)
+            })
+        }
