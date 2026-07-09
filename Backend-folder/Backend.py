@@ -19,6 +19,7 @@ def get_employees():
     cursor.execute("SELECT * FROM Demo")
     data = cursor.fetchall()
     cursor.close()
+    
     return jsonify(data)
 
 # POST - Insert record
